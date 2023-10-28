@@ -116,7 +116,7 @@ export class ConsultaUsuarioComponent implements OnInit {
   
   obtenerCandidatos() {
     this.spinner.show();
-    this.servicios.getData(this.servicios.BASE_URL_CATALOGOS, 'catalogos/findTiposCandidatos').toPromise().then(res => {
+    this.servicios.getData(this.servicios.BASE_URL_CATALOGOS, 'catalogos/findCandidatos').toPromise().then(res => {
       this.candidatos = res;
       this.dataSourceEventos = new MatTableDataSource(this.candidatos);
       this.dataSourceEventos.paginator = this.paginator;

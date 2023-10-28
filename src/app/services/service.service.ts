@@ -11,6 +11,7 @@ export class ServiceService {
 
   BASE_URL_VOTACIONES = environment.BASE_URL_VOTACIONES;
   BASE_URL_CATALOGOS = environment.BASE_URL_CATALOGOS;
+  BASE_URL_VOTO = environment.BASE_URL_VOTO;
 
 
   rolLogueado: any;
