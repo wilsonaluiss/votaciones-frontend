@@ -3,7 +3,11 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  BASE_URL_VOTACIONES: 'http://localhost:8080',
+  //BASE_URL_VOTACIONES: '',
+  BASE_URL_CATALOGOS: 'http://localhost:8081',
+  //BASE_URL_CATALOGOS: 'https://votaciones-catalogos-34d31cac6f4f.herokuapp.com',
 };
 
 /*

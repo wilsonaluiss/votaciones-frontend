@@ -1,0 +1,15 @@
+<mat-card>
+    <mat-action-list>
+        <div mat-subheader>Centralizador</div>
+        <button mat-list-item routerLink = "/centralizador-dashboard/centralizador">
+            <mat-icon mat-list-icon >face</mat-icon>Quejas Ingresadas
+        </button>
+
+        <button mat-list-item routerLink = "/centralizador-dashboard/analizador">
+            <mat-icon mat-list-icon >find_in_page</mat-icon>Quejas Asignadas
+        </button>
+        <button mat-list-item (click)="logout()">
+            <mat-icon mat-list-icon >logout</mat-icon>Salir
+        </button>
+    </mat-action-list>
+</mat-card>

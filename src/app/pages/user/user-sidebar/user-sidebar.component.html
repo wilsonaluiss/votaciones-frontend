@@ -1,0 +1,14 @@
+<mat-card>
+    <mat-action-list>
+        <div mat-subheader>Usuario</div>
+        <button mat-list-item routerLink = "/user-dashboard/usuario">
+            <mat-icon mat-list-icon >event</mat-icon>Partido Politico
+        </button>
+        <button mat-list-item routerLink = "/user-dashboard/consulta">
+            <mat-icon mat-list-icon >insert_drive_file</mat-icon>Candidato
+        </button>
+        <button mat-list-item (click)="logout()">
+            <mat-icon mat-list-icon >logout</mat-icon>Salir
+        </button>
+    </mat-action-list>
+</mat-card>

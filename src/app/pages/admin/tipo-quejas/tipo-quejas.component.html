@@ -1,0 +1,151 @@
+<div class="card-body ">
+  <mat-card-title class="titulo"> Tipo de Queja </mat-card-title>
+
+
+  <!-- Button trigger Ingreso de Informacion -->
+  <button mat-raised-button type="button" class="botones mt-4 mb-4" data-bs-toggle="modal"
+    data-bs-target="#staticAgregar">
+    <mat-icon>add_circle_outline</mat-icon>
+    Queja
+  </button>
+
+</div>
+
+
+<div class="container-fluid">
+  <mat-form-field>
+    <mat-label>Busqueda</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="" #input>
+  </mat-form-field>
+
+  <div class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSourceEventos" matSort>
+
+      <!-- Column ID punto de atención -->
+      <ng-container matColumnDef="codigoTipoQueja">
+        <th mat-header-cell *matHeaderCellDef class="headerTable" mat-sort-header> ID </th>
+        <td mat-cell *matCellDef="let row"> {{row.codigoTipoQueja}} </td>
+      </ng-container>
+
+      <!--Column region de atención-->
+      <ng-container matColumnDef="siglas">
+        <th mat-header-cell *matHeaderCellDef class="headerTable" mat-sort-header> Siglas </th>
+        <td mat-cell *matCellDef="let row"> {{row.siglas}}</td>
+      </ng-container>
+
+      <!-- Column nombre punto de atención-->
+      <ng-container matColumnDef="descripcionTipoQueja">
+        <th mat-header-cell *matHeaderCellDef class="headerTable" mat-sort-header> Nombre punto <br>de Atención </th>
+        <td mat-cell *matCellDef="let row"> {{row.descripcionTipoQueja}} </td>
+      </ng-container>
+
+
+
+      <!-- Columna Acción -->
+      <ng-container matColumnDef="accion">
+        <th mat-header-cell *matHeaderCellDef class="headerTable" class="headerTable"> Acción </th>
+        <td mat-cell *matCellDef="let evento" class="accion">
+          <span class="material-icons" title="Ver más" (click)="obtenerDetalleTipoQueja(evento.codigoTipoQueja)"
+            data-bs-toggle="modal" data-bs-target="#staticDetalleEventos" style="cursor: pointer;">visibility</span>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="eventoColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: eventoColumns;"></tr>
+
+      <!-- Row shown when there is no matching data. -->
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="4">No hay datos correspondientes a "{{input.value}}"</td>
+      </tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+  </div>
+</div>
+
+<!-- Agregar punto de atención -->
+<div class="modal fade" id="staticAgregar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header titulo">
+        <h5 class="modal-title" id="staticBackdropLabel">Agregar tipo de queja</h5>
+        <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="quejasForm">
+          <div class="row">
+            <div class="col-6">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label>Siglas de la Queja</mat-label>
+                <input matInput formControlName="siglasQueja" matInput placeholder="Siglas de la Queja" maxlength="100"
+                  autocomplete="off" keepCharPositions="false">
+                <mat-hint align="end">{{quejasForm.controls.siglasQueja.value?.length || 0}}/100</mat-hint>
+                <mat-error *ngIf="quejasForm.controls.siglasQueja.hasError('required')">
+                  Las siglas de la queja es requerido
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-6">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label>Descripción de la Queja</mat-label>
+                <input matInput formControlName="descripcionQueja" matInput placeholder="Descripción de la Queja"
+                  maxlength="100" autocomplete="off">
+                <mat-hint align="end">{{quejasForm.controls.descripcionQueja.value?.length || 0}}/100</mat-hint>
+                <mat-error *ngIf="quejasForm.controls.descripcionQueja.hasError('required')">
+                  La descripción es requerida
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btnCancelar" (click)="limpiarFormulario()"
+          data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" data-bs-dismiss="modal" [disabled]="quejasForm.invalid"
+          (click)="guardarTipoQueja(quejasForm.value)" class="btn btn-primary">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modificar tipo de queja -->
+<div class="modal fade" id="staticDetalleEventos" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header titulo">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Modificar Tipo de Queja</h1>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="quejasForm">
+          <div class="row">
+            <div class="col-6">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label>Descripción Queja</mat-label>
+                <input formControlName="descripcionQueja" matInput [value]="detalleQueja?.descripcionTipoQueja"
+                  placeholder="Nombre del punto de atención" maxlength="100" autocomplete="off">
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-10">
+              <mat-label>Estado</mat-label>
+              <div class="col-6">
+                <mat-slide-toggle color="primary" #estado formControlName="estadoQueja">{{estado.checked? 'Activo' :
+                  'Inactivo'}}</mat-slide-toggle>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" (click)="actualizarTipoQueja()" data-bs-dismiss="modal">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>

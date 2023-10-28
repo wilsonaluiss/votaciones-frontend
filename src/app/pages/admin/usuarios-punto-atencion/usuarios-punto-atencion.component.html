@@ -1,0 +1,249 @@
+<div class="card-body ">
+    <mat-card-title class="titulo"> Vicepresidente </mat-card-title>
+
+
+    <!-- Button trigger Ingreso de Informacion -->
+    <button mat-raised-button type="button" class="botones mt-4 mb-4" data-bs-toggle="modal"
+        data-bs-target="#staticAgregar">
+        <mat-icon>add_circle_outline</mat-icon>
+        Vicepresidente
+    </button>
+
+</div>
+<br>
+<div class="container-fluid">
+    <div class="container-fluid">
+        <mat-form-field>
+            <mat-label>Busqueda</mat-label>
+            <input matInput (keyup)="applyFilter($event)" placeholder="" #input>
+        </mat-form-field>
+
+        <div class="mat-elevation-z8">
+            <table mat-table [dataSource]="dataSourceEventos" matSort>
+                <!-- Column ID punto de atención -->
+                <ng-container matColumnDef="regionPatencion">
+                    <th mat-header-cell *matHeaderCellDef class="headerTable" mat-sort-header> Región </th>
+                    <td mat-cell *matCellDef="let row"> {{row.regionPatencion}} </td>
+                </ng-container>
+
+                <!-- Column ID punto de atención -->
+                <ng-container matColumnDef="dpiUsuario">
+                    <th mat-header-cell *matHeaderCellDef class="headerTable" mat-sort-header> Dpi </th>
+                    <td mat-cell *matCellDef="let row"> {{row.dpiUsuario}} </td>
+                </ng-container>
+
+                <!--Column region de atención-->
+                <ng-container matColumnDef="nombreUsuarioAtencion">
+                    <th mat-header-cell *matHeaderCellDef class="headerTable" mat-sort-header> Nombre </th>
+                    <td mat-cell *matCellDef="let row"> {{row.nombreUsuarioAtencion}}</td>
+                </ng-container>
+
+                <!-- Column nombre punto de atención-->
+                <ng-container matColumnDef="codigoCargo">
+                    <th mat-header-cell *matHeaderCellDef class="headerTable" mat-sort-header> Cargo </th>
+                    <td mat-cell *matCellDef="let row"> {{row.codigoCargo}} </td>
+                </ng-container>
+
+                <!-- Columna Acción -->
+                <ng-container matColumnDef="accion">
+                    <th mat-header-cell *matHeaderCellDef class="headerTable" class="headerTable"> Acción </th>
+                    <td mat-cell *matCellDef="let evento" class="accion">
+                        <span class="material-icons" title="Ver más"
+                            (click)="obtenerDetalleUpatencion(evento.codigoUsuarioPunto)" data-bs-toggle="modal"
+                            data-bs-target="#staticDetalleEventos" style="cursor: pointer;">visibility</span>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="eventoColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: eventoColumns;"></tr>
+
+                <!-- Row shown when there is no matching data. -->
+                <tr class="mat-row" *matNoDataRow>
+                    <td class="mat-cell" colspan="4">No hay datos correspondientes a "{{input.value}}"</td>
+                </tr>
+            </table>
+
+            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+        </div>
+    </div>
+</div>
+
+
+<!-- Agregar punto de atención -->
+<div class="modal fade" id="staticAgregar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header titulo">
+                <h5 class="modal-title" id="staticBackdropLabel">Agregar Usuario de Atención</h5>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="usuarioAtencionForm">
+                    <div class="row">
+                        <div class="col-6">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Región</mat-label>
+                                <mat-select formControlName="region">
+                                    <mat-option *ngFor="let regiones of regiones" [value]="regiones.codigoRegionalId"
+                                        (click)="obtenerRgion();obtenerPuntoAtencion()">
+                                        {{regiones.nombreRegion}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="usuarioAtencionForm.controls.region.hasError('required')">
+                                    La región es requerida
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-6">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Punto de atención</mat-label>
+                                <mat-select formControlName="puntoAtencion">
+                                    <mat-option *ngFor="let patencionActivas of patencionActivas"
+                                        [value]="patencionActivas.codigoAtencionId">
+                                        {{patencionActivas.nombrePatencion}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="usuarioAtencionForm.controls.puntoAtencion.hasError('required')">
+                                    El punto de atención es requerido
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <mat-form-field appearance="outline">
+                                <mat-label>DPI</mat-label>
+                                <input matInput formControlName="dpi" matInput placeholder="DPI" maxlength="16"
+                                    autocomplete="off" (change)="validarDpi()">
+                                <mat-hint align="end">{{usuarioAtencionForm.controls.dpi.value?.length || 0}}/16
+                                </mat-hint>
+                                <mat-error *ngIf="usuarioAtencionForm.controls.dpi.hasError('required')">
+                                    El DPI es requerido
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-6">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Nombre</mat-label>
+                                <input matInput #nombre formControlName="nombre" placeholder="Nombre usuario"
+                                    maxlength="225" autocomplete="off">
+                                <mat-hint align="end">{{usuarioAtencionForm.controls.nombre.value?.length ||
+                                    0}}/225</mat-hint>
+                                <mat-error *ngIf="usuarioAtencionForm.controls.nombre.hasError('required')">
+                                    El nombre es requerido</mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Correo Electronico</mat-label>
+                                <input matInput type="email" id="correo" #correo formControlName="correo"
+                                    placeholder="Correo Electronico" maxlength="50" autocomplete="off">
+                                <mat-hint align="end">{{usuarioAtencionForm.controls.correo.value?.length ||
+                                    0}}/50</mat-hint>
+                                <mat-error *ngIf="usuarioAtencionForm.controls.correo.hasError('required')">
+                                    El correo electronico es requerido</mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-6">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Cargo</mat-label>
+                                <mat-select formControlName="cargo">
+                                    <mat-option *ngFor="let catcargo of catcargos" [value]="catcargo.codigoCargo">
+                                        {{catcargo.nombreCargo}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="usuarioAtencionForm.controls.cargo.hasError('required')">
+                                    El nombre de cargo es requerido
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btnCancelar" data-bs-dismiss="modal" (click)="cancelar()">Cancelar</button>
+                <button type="button" data-bs-dismiss="modal"
+                    (click)="guardarUsuarioAtencion(usuarioAtencionForm.value);cancelar()"
+                    [disabled]="usuarioAtencionForm.invalid" class="btnGuardar">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modificar Usuario punto atención -->
+<div class="modal fade" id="staticDetalleEventos" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header titulo">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel"></h1>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="usuarioAtencionForm">
+
+                    <div class="row">
+                        <div class="col-6">
+                            <mat-form-field appearance="outline">
+                                <mat-label>DPI</mat-label>
+                                <input matInput [value]="detalleUpatencion?.dpiUsuario" matInput disabled>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-6">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Nombre Usuario</mat-label>
+                                <input matInput [value]="detalleUpatencion?.nombreUsuarioAtencion" matInput disabled>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Región</mat-label>
+                                <input matInput [value]="region" matInput disabled>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-6">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Cargos</mat-label>
+                                <mat-select formControlName="cargo">
+                                    <mat-option *ngFor="let catcargos of catcargos" [value]="catcargos.codigoCargo" >
+                                        {{catcargos.nombreCargo}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-10">
+                            <mat-label>Estado</mat-label>
+                            <div class="col-6">
+                                <mat-slide-toggle color="primary" #estado (blur)="validarEstado($event)" formControlName="estadoUsuario">{{estado.checked?
+                                    'Activo' :
+                                    'Inactivo'}}</mat-slide-toggle>
+                            </div>
+                        </div>
+                        <!-- <div class="col-6">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Cargos</mat-label>
+                                <mat-select formControlName="cargo">
+                                    <mat-option *ngFor="let catcargos of catcargos" [value]="catcargos.codigoCargo" >
+                                        {{catcargos.nombreCargo}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div> -->
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btnCancelar" (click)="cancelar()" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
+                    (click)="actualizarUsuarioAtencion()">Guardar
+                    Cambios</button>
+            </div>
+        </div>
+    </div>
+</div>

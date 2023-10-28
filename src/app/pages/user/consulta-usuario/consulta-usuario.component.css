@@ -1,0 +1,113 @@
+.titulo {
+    text-align: center;
+    background-color: #3f51b5;
+    color: white;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+    font-family: normal normal medium 18px/22px Arial;
+    box-shadow: 0px 3px 6px #00000029;
+    border-radius: 18px 18px 0px 0px;
+    opacity: 1;
+    margin-top: 10px;
+}
+
+::ng-deep .cdk-overlay-container {
+    z-index: 1200 !important;
+  }
+  
+  .titulo {
+      text-align: center;
+      background-color: #3f51b5;
+      color: white;
+      height: 60px;
+      display: flex;
+      justify-content: center;
+      align-content: center;
+      flex-direction: column;
+      font-family: normal normal medium 18px/22px Arial;
+      box-shadow: 0px 3px 6px #00000029;
+      border-radius: 18px 18px 0px 0px;
+      opacity: 1;
+      margin-top: 10px;
+  }
+  
+  .botones {
+      margin-left: 2%;
+      /* UI Properties */
+      background: #3f51b5 0% 0% no-repeat padding-box;
+      opacity: 1;
+      /* UI Properties */
+      text-align: center;
+      letter-spacing: 0px;
+      color: #FFFFFF;
+      opacity: 1;
+      border-radius: 20px;
+  }
+  
+  table {
+      width: 100%;
+    }
+    
+    .mat-mdc-form-field {
+      font-size: 14px;
+      width: 100%;
+    }
+    
+    td, th {
+      width: 25%;
+    }
+  
+    .modal-title {
+      text-align: center;
+      color: #ffffff;
+      font-size: 20px;
+  }
+  
+  .btnCancelar {
+    margin-left: 2%;
+    /* Layout Properties */
+    top: 734px;
+    left: 1252px;
+    width: 150px;
+    height: 40px;
+    /* UI Properties */
+    background: #b81515 0% 0% no-repeat padding-box;
+    opacity: 1;
+    /* UI Properties */
+    text-align: center;
+    letter-spacing: 0px;
+    color: #FFFFFF;
+    opacity: 1;
+    border-radius: 20px;
+    
+  }
+  
+
+  .btnGuardar {
+    margin-left: 2%;
+    /* Layout Properties */
+    top: 734px;
+    left: 1252px;
+    width: 150px;
+    height: 40px;
+    /* UI Properties */
+    background: #0615a0 0% 0% no-repeat padding-box;
+    opacity: 1;
+    /* UI Properties */
+    text-align: center;
+    letter-spacing: 0px;
+    color: #FFFFFF;
+    opacity: 1;
+    border-radius: 20px;
+    
+  }
+  
+  .modal-content {
+    box-shadow: 0px 3px 6px #00000029;
+    border-radius: 20px;
+    opacity: 1;
+}
+

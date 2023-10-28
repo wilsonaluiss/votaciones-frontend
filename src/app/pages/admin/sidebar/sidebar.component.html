@@ -1,0 +1,29 @@
+<mat-card>
+    <mat-action-list>
+        <div mat-subheader>Menu</div>
+        <!-- <button routerLink="/admin" mat-list-item>
+            <mat-icon mat-list-icon>home</mat-icon>Inicio
+        </button> -->
+        <button mat-list-item routerLink = "/admin/puntos-atencion">
+            <mat-icon mat-list-icon >store</mat-icon>Presidente 
+        </button>
+        <button mat-list-item routerLink = "/admin/usuarios-punto-atencion">
+            <mat-icon mat-list-icon >account_circle</mat-icon>Vicepresidente
+        </button>
+        <button mat-list-item routerLink = "/admin/admin-usuarios">
+            <mat-icon mat-list-icon >supervised_user_circle</mat-icon>Alcalde
+        </button>
+        <button mat-list-item routerLink = "/admin/tipo-quejas">
+            <mat-icon mat-list-icon >format_shapes</mat-icon>Diputados al Congreso por Lista Nacional
+        </button>
+        <button mat-list-item routerLink = "/admin/tipo-quejas">
+            <mat-icon mat-list-icon >format_shapes</mat-icon>Diputados al Congreso por Distrito Electoral
+        </button>
+        <button mat-list-item routerLink = "/admin/tipo-quejas">
+            <mat-icon mat-list-icon >format_shapes</mat-icon>Diputados al Parlacen
+        </button>
+        <button mat-list-item (click)="logout()">
+            <mat-icon mat-list-icon >logout</mat-icon>Salir
+        </button>
+    </mat-action-list>
+</mat-card>
